@@ -1,0 +1,78 @@
+# 🚀 RholaScents — Deployment Guide
+# GitHub Pages (Free Hosting)
+
+=============================================
+STEP 1 — CREATE THE GITHUB REPO
+=============================================
+
+1. Go to https://github.com/new
+2. Repository name: rholascents
+3. Set to PUBLIC (required for free GitHub Pages)
+4. Do NOT initialize with README (we have our own)
+5. Click "Create repository"
+
+=============================================
+STEP 2 — UPLOAD YOUR FILES
+=============================================
+
+Option A — Via GitHub Website (No Terminal needed):
+  1. Open your new repo: https://github.com/Gbolahan0x/rholascents
+  2. Click "uploading an existing file"
+  3. Drag & drop BOTH files:
+       - index.html
+       - README.md
+  4. Scroll down → click "Commit changes"
+
+Option B — Via Terminal (Git):
+  git init
+  git add .
+  git commit -m "🚀 Launch RholaScents website"
+  git branch -M main
+  git remote add origin https://github.com/Gbolahan0x/rholascents.git
+  git push -u origin main
+
+=============================================
+STEP 3 — ENABLE GITHUB PAGES
+=============================================
+
+1. Go to your repo → click "Settings" tab
+2. Left sidebar → click "Pages"
+3. Under "Source" → select "Deploy from a branch"
+4. Branch: main | Folder: / (root)
+5. Click Save
+
+Wait ~60 seconds, then your site is LIVE at:
+👉 https://Gbolahan0x.github.io/rholascents
+
+=============================================
+STEP 4 — UPDATE BEFORE GOING LIVE
+=============================================
+
+In index.html, find and replace:
+
+  WhatsApp number:
+    Find:    const phone = '2348000000000';
+    Replace: const phone = 'YOUR_ACTUAL_WHATSAPP_NUMBER';
+
+  OPay checkout:
+    Find:    // OPay integration
+    Replace: window.location.href = 'YOUR_OPAY_CHECKOUT_URL';
+
+=============================================
+FUTURE UPDATES
+=============================================
+
+Every time you edit index.html, just:
+  git add index.html
+  git commit -m "Update products"
+  git push
+
+GitHub Pages auto-deploys within ~30 seconds.
+
+=============================================
+YOUR LINKS
+=============================================
+
+  GitHub Repo:  https://github.com/Gbolahan0x/rholascents
+  Live Website: https://Gbolahan0x.github.io/rholascents
+

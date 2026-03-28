@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RholaScents – Discover Your Signature</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --red: #E8272A;
+    --orange: #F97316;
+    --yellow: #FBBF24;
+    --deep: #0A0A0A;
+    --dark: #111111;
+    --card: #1A1A1A;
+    --border: #2A2A2A;
+    --text: #F5F0E8;
+    --muted: #888;
+    --gold: #D4AF37;
+    --green: #25D366;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius:3px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 40px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size:28px;
+    letter-spacing:4px;
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration:none;
+    font-size:13px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color:var(--text); }
+  .nav-right { display:flex; gap:16px; align-items:center; }
+  .cart-btn {
+    background: var(--red);
+    color:#fff;
+    border:none;
+    padding:10px 22px;
+    border-radius:2px;
+    font-size:13px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition: background .2s;
+  }
+  .cart-btn:hover { background: var(--orange); }
+  .cart-count {
+    background: var(--yellow);
+    color:#000;
+    border-radius:50%;
+    width:20px; height:20px;
+    font-size:11px;
+    font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* AD BANNER TICKER */
+  .ticker {
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow), var(--orange), var(--red));
+    background-size: 200% 100%;
+    animation: tickerBg 4s linear infinite;
+    padding:10px 0;
+    overflow:hidden;
+    margin-top:72px;
+  }
+  @keyframes tickerBg { 0%{background-position:0%} 100%{background-position:200%} }
+  .ticker-inner {
+    display:flex;
+    gap:80px;
+    white-space:nowrap;
+    animation: tickerScroll 20s linear infinite;
+  }
+  @keyframes tickerScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .ticker span {
+    color:#000;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+  .ticker span::before { content:'✦ '; }
+
+  /* HERO */
+  .hero {
+    min-height: 92vh;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-items:center;
+    padding: 80px 40px 60px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(232,39,42,0.18), transparent),
+                radial-gradient(ellipse 40% 60% at 80% 20%, rgba(249,115,22,0.12), transparent);
+    pointer-events:none;
+  }
+  .hero-left { position:relative; z-index:1; }
+  .hero-tag {
+    display:inline-block;
+    background: var(--red);
+    color:#fff;
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    padding:6px 16px;
+    margin-bottom:28px;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px,8vw,120px);
+    line-height:.95;
+    letter-spacing:2px;
+    margin-bottom:28px;
+    animation: fadeUp .6s .1s ease both;
+  }
+  .hero-title span {
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size:16px;
+    color: var(--muted);
+    max-width:420px;
+    line-height:1.7;
+    margin-bottom:40px;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-btns { display:flex; gap:16px; flex-wrap:wrap; animation: fadeUp .6s .3s ease both; }
+  .btn-primary {
+    background: linear-gradient(90deg, var(--red), var(--orange));
+    color:#fff;
+    border:none;
+    padding:16px 36px;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    cursor:pointer;
+    border-radius:2px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,39,42,0.4); }
+  .btn-outline {
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--border);
+    padding:16px 36px;
+    font-size:14px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    cursor:pointer;
+    border-radius:2px;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-outline:hover { border-color: var(--orange); color:var(--orange); }
+  .hero-stats {
+    display:flex; gap:48px; margin-top:56px;
+    animation: fadeUp .6s .4s ease both;
+  }
+  .stat-num {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:40px;
+    background: linear-gradient(90deg, var(--orange), var(--yellow));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .stat-label { font-size:12px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+
+  /* HERO RIGHT – Fragrance Visual */
+  .hero-right {
+    position:relative; z-index:1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .bottle-showcase {
+    position:relative;
+    width:340px; height:460px;
+  }
+  .bottle-glow {
+    position:absolute;
+    width:300px; height:300px;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(232,39,42,0.35), rgba(249,115,22,0.2), transparent 70%);
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  @keyframes pulseGlow { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8} 50%{transform:translate(-50%,-50%) scale(1.15);opacity:1} }
+  .bottle-art {
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:180px;
+    animation: floatBottle 4s ease-in-out infinite;
+  }
+  @keyframes floatBottle { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 50%{transform:translate(-50%,-50%) translateY(-16px)} }
+  /* SVG Bottle */
+  .bottle-svg { width:180px; }
+
+  /* PROMO BANNER */
+  .promo-section {
+    padding:16px 40px;
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:16px;
+  }
+  .promo-card {
+    border-radius:4px;
+    padding:28px 32px;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    transition: transform .2s;
+  }
+  .promo-card:hover { transform:scale(1.02); }
+  .promo-card:nth-child(1) { background: linear-gradient(135deg,#E8272A,#7B0F11); }
+  .promo-card:nth-child(2) { background: linear-gradient(135deg,#F97316,#7C3A0E); }
+  .promo-card:nth-child(3) { background: linear-gradient(135deg,#FBBF24,#8B6914); }
+  .promo-card:nth-child(3) .promo-title, .promo-card:nth-child(3) .promo-sub { color:#111; }
+  .promo-badge {
+    position:absolute; top:16px; right:16px;
+    background:rgba(255,255,255,0.2);
+    color:#fff;
+    font-size:11px;
+    letter-spacing:2px;
+    padding:4px 12px;
+    border-radius:20px;
+    text-transform:uppercase;
+  }
+  .promo-card:nth-child(3) .promo-badge { color:#111; }
+  .promo-title { font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; color:#fff; }
+  .promo-sub { font-size:13px; color:rgba(255,255,255,0.7); margin-top:4px; }
+  .promo-cta {
+    display:inline-block;
+    margin-top:16px;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#fff;
+    border-bottom:1px solid rgba(255,255,255,0.4);
+    padding-bottom:2px;
+  }
+  .promo-card:nth-child(3) .promo-cta { color:#111; border-color:rgba(0,0,0,0.3); }
+
+  /* SECTION HEADER */
+  .section-header {
+    display:flex; align-items:flex-end; justify-content:space-between;
+    padding:60px 40px 32px;
+  }
+  .section-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(36px,5vw,64px);
+    letter-spacing:3px;
+    line-height:1;
+  }
+  .section-title span {
+    background: linear-gradient(90deg,var(--red),var(--orange));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .section-sub { font-size:14px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+
+  /* FILTER */
+  .filter-bar {
+    padding:0 40px 28px;
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .filter-btn {
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--muted);
+    padding:9px 22px;
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    border-radius:2px;
+    transition: all .2s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background:var(--red);
+    color:#fff;
+    border-color:var(--red);
+  }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+    gap:20px;
+    padding:0 40px 80px;
+  }
+  .product-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:4px;
+    overflow:hidden;
+    transition: transform .2s, box-shadow .2s;
+    cursor:pointer;
+    position:relative;
+  }
+  .product-card:hover {
+    transform:translateY(-6px);
+    box-shadow:0 16px 48px rgba(232,39,42,0.25);
+    border-color:var(--red);
+  }
+  .product-img {
+    height:220px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .product-img-bg {
+    position:absolute; inset:0;
+    transition: transform .3s;
+  }
+  .product-card:hover .product-img-bg { transform:scale(1.08); }
+  .prod-bottle { width:100px; position:relative; z-index:1; }
+  .product-badge {
+    position:absolute; top:12px; left:12px;
+    font-size:10px; font-weight:700;
+    letter-spacing:1.5px; text-transform:uppercase;
+    padding:4px 10px; border-radius:2px;
+    z-index:2;
+  }
+  .badge-hot { background:var(--red); color:#fff; }
+  .badge-new { background:var(--orange); color:#fff; }
+  .badge-sale { background:var(--yellow); color:#000; }
+  .badge-top { background: linear-gradient(90deg,var(--gold),#A87E00); color:#000; }
+  .product-info { padding:20px; }
+  .product-brand { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  .product-name { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:8px; }
+  .product-desc { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:16px; }
+  .product-price-row { display:flex; align-items:center; justify-content:space-between; }
+  .product-price { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--orange); letter-spacing:1px; }
+  .product-old-price { font-size:13px; color:var(--muted); text-decoration:line-through; }
+  .add-btn {
+    background:var(--red);
+    color:#fff;
+    border:none;
+    width:38px; height:38px;
+    border-radius:50%;
+    font-size:22px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition: background .2s, transform .15s;
+    line-height:1;
+  }
+  .add-btn:hover { background:var(--orange); transform:scale(1.1); }
+  .rating { display:flex; gap:2px; margin-bottom:6px; }
+  .star { color:var(--yellow); font-size:13px; }
+
+  /* WHATSAPP CTA */
+  .whatsapp-section {
+    margin:0 40px 60px;
+    background: linear-gradient(135deg, #075E54, #128C7E);
+    border-radius:4px;
+    padding:48px 56px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:32px;
+    flex-wrap:wrap;
+    position:relative;
+    overflow:hidden;
+  }
+  .whatsapp-section::before {
+    content:'';
+    position:absolute; right:-40px; top:-40px;
+    width:200px; height:200px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+  }
+  .wa-left { max-width:560px; }
+  .wa-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:40px; letter-spacing:3px;
+    margin-bottom:10px;
+  }
+  .wa-sub { font-size:15px; color:rgba(255,255,255,0.75); line-height:1.6; }
+  .wa-btn {
+    display:flex; align-items:center; gap:12px;
+    background:#25D366;
+    color:#fff;
+    border:none;
+    padding:18px 36px;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:1px;
+    border-radius:4px;
+    cursor:pointer;
+    white-space:nowrap;
+    text-decoration:none;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .wa-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,211,102,0.45); }
+  .wa-icon { font-size:24px; }
+
+  /* CHECKOUT MODAL */
+  .modal-overlay {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(8px);
+    z-index:200;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:6px;
+    width:100%; max-width:520px;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:40px;
+    position:relative;
+  }
+  .modal-close {
+    position:absolute; top:20px; right:24px;
+    background:none; border:none;
+    color:var(--muted); font-size:24px;
+    cursor:pointer;
+  }
+  .modal-close:hover { color:var(--red); }
+  .modal-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:32px; letter-spacing:3px;
+    margin-bottom:6px;
+  }
+  .modal-title span { color:var(--orange); }
+  .modal-sub { font-size:13px; color:var(--muted); margin-bottom:28px; }
+  .cart-item {
+    display:flex; gap:16px; align-items:center;
+    padding:16px 0; border-bottom:1px solid var(--border);
+  }
+  .cart-item-img {
+    width:56px; height:56px;
+    border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .cart-item-info { flex:1; }
+  .cart-item-name { font-family:'Playfair Display',serif; font-size:15px; }
+  .cart-item-price { color:var(--orange); font-size:15px; font-weight:600; }
+  .cart-item-qty { display:flex; gap:8px; align-items:center; margin-top:6px; }
+  .qty-btn {
+    background:var(--border); border:none; color:var(--text);
+    width:26px; height:26px; border-radius:2px; cursor:pointer; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .qty-val { font-size:14px; min-width:20px; text-align:center; }
+  .remove-btn { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; }
+  .remove-btn:hover { color:var(--red); }
+  .cart-total {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 0 28px;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:22px; letter-spacing:2px;
+  }
+  .total-amount { color:var(--orange); font-size:28px; }
+  .empty-cart { text-align:center; padding:48px 0; color:var(--muted); }
+  .empty-cart-icon { font-size:48px; margin-bottom:12px; }
+
+  /* CHECKOUT FORM */
+  .checkout-form { display:none; }
+  .checkout-form.visible { display:block; }
+  .form-group { margin-bottom:16px; }
+  .form-label { font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; display:block; }
+  .form-input {
+    width:100%; padding:12px 16px;
+    background:#222; border:1px solid var(--border);
+    color:var(--text); border-radius:2px; font-size:14px;
+    font-family:'DM Sans',sans-serif;
+    transition:border-color .2s;
+  }
+  .form-input:focus { outline:none; border-color:var(--orange); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .pay-methods { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+  .pay-method {
+    border:2px solid var(--border);
+    border-radius:4px; padding:16px;
+    cursor:pointer; text-align:center;
+    transition:all .2s;
+  }
+  .pay-method.selected { border-color:var(--orange); background:rgba(249,115,22,0.08); }
+  .pay-method-icon { font-size:28px; margin-bottom:4px; }
+  .pay-method-name { font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+  .opay-logo { color:#00B2A9; font-weight:800; font-size:15px; letter-spacing:1px; }
+  .place-order-btn {
+    width:100%; padding:18px;
+    background:linear-gradient(90deg,var(--red),var(--orange));
+    color:#fff; border:none; border-radius:2px;
+    font-size:15px; font-weight:700; letter-spacing:2px;
+    text-transform:uppercase; cursor:pointer;
+    margin-top:8px;
+    transition: opacity .2s, transform .2s;
+  }
+  .place-order-btn:hover { opacity:.9; transform:translateY(-1px); }
+  .divider { display:flex; align-items:center; gap:12px; margin:20px 0; }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+  .divider span { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:1px; }
+
+  /* SUCCESS */
+  .order-success { display:none; text-align:center; padding:24px 0; }
+  .order-success.visible { display:block; }
+  .success-icon { font-size:56px; margin-bottom:16px; animation:bounceIn .5s ease; }
+  @keyframes bounceIn { 0%{transform:scale(0)} 80%{transform:scale(1.1)} 100%{transform:scale(1)} }
+  .success-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:3px; color:var(--green); }
+  .success-msg { color:var(--muted); font-size:14px; margin-top:8px; line-height:1.6; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding:0 40px 80px; }
+  .testi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+  .testi-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:4px; padding:28px;
+    position:relative;
+  }
+  .testi-card::before {
+    content:'"';
+    font-family:'Playfair Display',serif;
+    font-size:80px; color:var(--red);
+    opacity:.3;
+    position:absolute; top:8px; left:20px;
+    line-height:1;
+  }
+  .testi-text { font-size:14px; line-height:1.7; color:var(--muted); margin-bottom:20px; font-style:italic; }
+  .testi-author { font-weight:600; font-size:14px; }
+  .testi-loc { font-size:12px; color:var(--muted); }
+
+  /* FOOTER */
+  footer {
+    border-top:1px solid var(--border);
+    padding:56px 40px 32px;
+  }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+  .footer-brand { font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:4px; margin-bottom:16px;
+    background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .footer-desc { font-size:13px; color:var(--muted); line-height:1.7; }
+  .footer-title { font-size:12px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; font-weight:600; }
+  .footer-links { list-style:none; }
+  .footer-links li { margin-bottom:10px; }
+  .footer-links a { color:var(--muted); text-decoration:none; font-size:13px; transition:color .2s; }
+  .footer-links a:hover { color:var(--orange); }
+  .footer-bottom { border-top:1px solid var(--border); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .footer-bottom p { font-size:12px; color:var(--muted); }
+  .social-links { display:flex; gap:12px; }
+  .social-btn {
+    width:36px; height:36px;
+    border:1px solid var(--border);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--muted); text-decoration:none; font-size:15px;
+    transition:all .2s;
+  }
+  .social-btn:hover { border-color:var(--red); color:var(--red); }
+
+  /* TOAST */
+  .toast {
+    position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(100px);
+    background:linear-gradient(90deg,var(--red),var(--orange));
+    color:#fff; padding:14px 28px;
+    border-radius:4px; font-size:14px; font-weight:500;
+    z-index:300; transition:transform .4s ease;
+    pointer-events:none; white-space:nowrap;
+  }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  /* FADE UP */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+  /* FLOATING WA */
+  .float-wa {
+    position:fixed; bottom:32px; right:32px; z-index:150;
+    width:58px; height:58px;
+    background:#25D366;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:28px;
+    box-shadow:0 4px 20px rgba(37,211,102,0.5);
+    text-decoration:none;
+    transition:transform .2s;
+    animation: floatWA 3s ease-in-out infinite;
+  }
+  @keyframes floatWA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .float-wa:hover { transform:scale(1.12)!important; }
+
+  /* MOBILE */
+  @media(max-width:900px){
+    nav { padding:14px 20px; }
+    .nav-links { display:none; }
+    .hero { grid-template-columns:1fr; padding:40px 20px; gap:40px; text-align:center; }
+    .hero-stats { justify-content:center; }
+    .hero-right { order:-1; }
+    .hero-btns { justify-content:center; }
+    .promo-section { grid-template-columns:1fr; padding:16px 20px; }
+    .section-header { padding:40px 20px 20px; flex-direction:column; align-items:flex-start; gap:8px; }
+    .filter-bar { padding:0 20px 20px; }
+    .product-grid { padding:0 20px 60px; }
+    .whatsapp-section { margin:0 20px 48px; padding:32px 28px; flex-direction:column; }
+    .testimonials { padding:0 20px 60px; }
+    footer { padding:40px 20px 24px; }
+    .footer-grid { grid-template-columns:1fr 1fr; }
+    .modal { padding:28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">RholaScents</div>
+  <ul class="nav-links">
+    <li><a href="#catalog">Shop</a></li>
+    <li><a href="#promos">Deals</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="cart-count" id="cartCount">0</div>
+    <button class="cart-btn" onclick="openCart()">🛒 Bag</button>
+  </div>
+</nav>
+
+<!-- AD TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <span>Free delivery on orders above ₦15,000</span>
+    <span>New arrivals every week</span>
+    <span>Authentic fragrances guaranteed</span>
+    <span>Order via WhatsApp for same-day delivery</span>
+    <span>Up to 40% off selected items</span>
+    <span>Free delivery on orders above ₦15,000</span>
+    <span>New arrivals every week</span>
+    <span>Authentic fragrances guaranteed</span>
+    <span>Order via WhatsApp for same-day delivery</span>
+    <span>Up to 40% off selected items</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-left">
+    <div class="hero-tag">✦ New Collection 2025</div>
+    <h1 class="hero-title">
+      Wear Your<br/><span>Story</span><br/>In Scent
+    </h1>
+    <p class="hero-sub">Premium fragrances from the world's finest houses. Discover your signature scent with RholaScents — where every bottle tells a story.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+      <button class="btn-outline" onclick="openWhatsApp('Hello! I want to explore RholaScents collections.')">Order on WhatsApp</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Fragrances</div>
+      </div>
+      <div>
+        <div class="stat-num">12K+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Authentic</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="bottle-showcase">
+      <div class="bottle-glow"></div>
+      <div class="bottle-art">
+        <svg class="bottle-svg" viewBox="0 0 180 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Cap -->
+          <rect x="64" y="8" width="52" height="32" rx="6" fill="url(#capGrad)"/>
+          <rect x="70" y="2" width="40" height="12" rx="4" fill="#D4AF37"/>
+          <!-- Neck -->
+          <rect x="72" y="40" width="36" height="28" rx="3" fill="url(#neckGrad)"/>
+          <!-- Shoulders -->
+          <path d="M62 68 Q60 90 52 110 L52 260 Q52 280 90 280 Q128 280 128 260 L128 110 Q120 90 118 68 Z" fill="url(#bodyGrad)"/>
+          <!-- Glass shine -->
+          <path d="M66 90 Q64 130 64 170 L68 170 Q68 130 70 90 Z" fill="rgba(255,255,255,0.2)" rx="2"/>
+          <!-- Label bg -->
+          <rect x="60" y="140" width="60" height="80" rx="4" fill="rgba(0,0,0,0.35)"/>
+          <!-- Label text lines -->
+          <rect x="67" y="152" width="46" height="6" rx="2" fill="#D4AF37" opacity=".9"/>
+          <rect x="72" y="163" width="36" height="4" rx="1" fill="rgba(255,255,255,0.5)"/>
+          <rect x="69" y="172" width="42" height="3" rx="1" fill="rgba(255,255,255,0.3)"/>
+          <rect x="74" y="181" width="32" height="3" rx="1" fill="rgba(255,255,255,0.3)"/>
+          <rect x="70" y="198" width="20" height="10" rx="2" fill="#E8272A" opacity=".9"/>
+          <!-- Liquid -->
+          <ellipse cx="90" cy="240" rx="32" ry="8" fill="rgba(232,39,42,0.3)"/>
+          <!-- Bottle base -->
+          <rect x="52" y="258" width="76" height="16" rx="4" fill="url(#baseGrad)"/>
+          <!-- Sparkles -->
+          <circle cx="42" cy="130" r="3" fill="#FBBF24" opacity=".7">
+            <animate attributeName="opacity" values="0.7;0.1;0.7" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="145" cy="160" r="2" fill="#F97316" opacity=".6">
+            <animate attributeName="opacity" values="0.6;0.1;0.6" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="36" cy="200" r="2" fill="#E8272A" opacity=".5">
+            <animate attributeName="opacity" values="0.5;0.1;0.5" dur="1.8s" repeatCount="indefinite"/>
+          </circle>
+          <defs>
+            <linearGradient id="capGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1A1A1A"/>
+              <stop offset="100%" stop-color="#3A3A3A"/>
+            </linearGradient>
+            <linearGradient id="neckGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#2A1A0A"/>
+              <stop offset="100%" stop-color="#5A3A1A"/>
+            </linearGradient>
+            <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#3A1A0A"/>
+              <stop offset="40%" stop-color="#7A2A10"/>
+              <stop offset="100%" stop-color="#2A0A08"/>
+            </linearGradient>
+            <linearGradient id="baseGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2A1A0A"/>
+              <stop offset="100%" stop-color="#1A0A04"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNERS -->
+<section id="promos" class="promo-section">
+  <div class="promo-card" onclick="filterProducts('women')">
+    <div class="promo-badge">Limited</div>
+    <div class="promo-title">Women's Luxe</div>
+    <div class="promo-sub">Floral & oriental collections</div>
+    <div class="promo-cta">Shop Now →</div>
+  </div>
+  <div class="promo-card" onclick="filterProducts('men')">
+    <div class="promo-badge">New In</div>
+    <div class="promo-title">Men's Bold</div>
+    <div class="promo-sub">Woody & aquatic signatures</div>
+    <div class="promo-cta">Shop Now →</div>
+  </div>
+  <div class="promo-card" onclick="filterProducts('sale')">
+    <div class="promo-badge">Hot Deal</div>
+    <div class="promo-title">40% OFF</div>
+    <div class="promo-sub">Selected fragrances today only</div>
+    <div class="promo-cta" style="color:#111;border-color:rgba(0,0,0,0.3)">Grab Deal →</div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section id="catalog">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Our <span>Collection</span></h2>
+      <div class="section-sub">Curated fragrances for every moment</div>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterProducts('all',this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('women',this)">Women</button>
+    <button class="filter-btn" onclick="filterProducts('men',this)">Men</button>
+    <button class="filter-btn" onclick="filterProducts('unisex',this)">Unisex</button>
+    <button class="filter-btn" onclick="filterProducts('sale',this)">On Sale</button>
+    <button class="filter-btn" onclick="filterProducts('new',this)">New In</button>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- WHATSAPP -->
+<section class="whatsapp-section">
+  <div class="wa-left">
+    <div class="wa-title">Order via WhatsApp</div>
+    <div class="wa-sub">Prefer a personal touch? Chat with us directly on WhatsApp. Share the fragrance you want, your delivery address — and we'll handle the rest. Fast, easy, and personal.</div>
+  </div>
+  <a class="wa-btn" href="#" onclick="openWhatsApp('Hello RholaScents! I would like to place an order.')">
+    <span class="wa-icon">💬</span>
+    Chat & Order Now
+  </a>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">What Our <span>Clients</span> Say</h2>
+    </div>
+  </div>
+  <div class="testimonials">
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p class="testi-text">I ordered Baccarat Rouge and it arrived the same day! The packaging was elegant and the scent is absolutely divine. RholaScents never disappoints.</p>
+        <div class="testi-author">Chidinma A.</div>
+        <div class="testi-loc">Lagos, Nigeria</div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">Best perfume store in Nigeria hands down. The WhatsApp order was so smooth, payment was easy via OPay, and my husband loved his birthday gift!</p>
+        <div class="testi-author">Funke O.</div>
+        <div class="testi-loc">Abuja, Nigeria</div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">100% authentic products. I was skeptical at first but after smelling the bottle I knew it was the real deal. Will keep buying from RholaScents!</p>
+        <div class="testi-author">Emeka J.</div>
+        <div class="testi-loc">Port Harcourt, Nigeria</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">RholaScents</div>
+      <p class="footer-desc">Nigeria's premier destination for authentic luxury fragrances. We bring the world's finest scents to your doorstep with speed, care, and passion.</p>
+    </div>
+    <div>
+      <div class="footer-title">Shop</div>
+      <ul class="footer-links">
+        <li><a href="#catalog">All Fragrances</a></li>
+        <li><a href="#" onclick="filterProducts('women')">Women</a></li>
+        <li><a href="#" onclick="filterProducts('men')">Men</a></li>
+        <li><a href="#" onclick="filterProducts('unisex')">Unisex</a></li>
+        <li><a href="#" onclick="filterProducts('sale')">On Sale</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-title">Help</div>
+      <ul class="footer-links">
+        <li><a href="#">How to Order</a></li>
+        <li><a href="#">Payment Info</a></li>
+        <li><a href="#">Delivery</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="#">📍 Lagos, Nigeria</a></li>
+        <li><a href="tel:+2348000000000">📞 +234 800 000 0000</a></li>
+        <li><a href="mailto:hello@rholascents.com">✉️ hello@rholascents.com</a></li>
+        <li><a href="#">🕐 Mon–Sat, 8am–8pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 RholaScents. All rights reserved. Authentic Fragrances.</p>
+    <div class="social-links">
+      <a class="social-btn" href="#">𝕏</a>
+      <a class="social-btn" href="#">f</a>
+      <a class="social-btn" href="#">📸</a>
+      <a class="social-btn" href="#">💬</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a class="float-wa" href="#" onclick="openWhatsApp('Hi RholaScents! I need help.')">💬</a>
+
+<!-- CART MODAL -->
+<div class="modal-overlay" id="cartModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCart()">✕</button>
+    <div id="cartView">
+      <div class="modal-title">Your <span>Bag</span></div>
+      <div class="modal-sub" id="cartSubtitle">Your selected fragrances</div>
+      <div id="cartItems"></div>
+      <div class="cart-total" id="cartTotal" style="display:none">
+        <span>Total</span>
+        <span class="total-amount" id="totalAmount">₦0</span>
+      </div>
+      <div id="cartActions"></div>
+    </div>
+    <div class="checkout-form" id="checkoutForm">
+      <div class="modal-title">Check<span>out</span></div>
+      <div class="modal-sub">Fill in your details to complete order</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" placeholder="Chidinma" id="fname"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" placeholder="Adaeze" id="lname"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="form-input" type="tel" placeholder="+234 800 000 0000" id="phone"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Delivery Address</label>
+        <input class="form-input" type="text" placeholder="Street, City, State" id="address"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Method</label>
+        <div class="pay-methods">
+          <div class="pay-method selected" onclick="selectPay(this,'opay')">
+            <div class="pay-method-icon"><span class="opay-logo">OPay</span></div>
+            <div class="pay-method-name">OPay</div>
+          </div>
+          <div class="pay-method" onclick="selectPay(this,'whatsapp')">
+            <div class="pay-method-icon">💬</div>
+            <div class="pay-method-name">WhatsApp</div>
+          </div>
+        </div>
+      </div>
+      <div class="cart-total">
+        <span>Order Total</span>
+        <span class="total-amount" id="checkoutTotal">₦0</span>
+      </div>
+      <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+      <button class="btn-outline" style="width:100%;margin-top:10px;padding:14px;" onclick="backToCart()">← Back to Bag</button>
+    </div>
+    <div class="order-success" id="orderSuccess">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Order Placed!</div>
+      <p class="success-msg" id="successMsg">Thank you! Your order is confirmed.<br/>We'll contact you shortly to arrange delivery.</p>
+      <button class="btn-primary" style="margin-top:24px;" onclick="closeCart()">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// PRODUCTS DATA
+const products = [
+  { id:1, name:'Baccarat Rouge 540', brand:'Maison Francis Kurkdjian', price:85000, oldPrice:110000, category:'unisex', badge:'hot', color:'#4A1A2A', notes:'Jasmine · Saffron · Cedarwood', rating:5 },
+  { id:2, name:'Black Opium', brand:'Yves Saint Laurent', price:62000, oldPrice:78000, category:'women', badge:'top', color:'#1A0A2A', notes:'Coffee · Vanilla · White Flowers', rating:5 },
+  { id:3, name:'Sauvage Elixir', brand:'Dior', price:75000, oldPrice:null, category:'men', badge:'new', color:'#0A1A2A', notes:'Spices · Sandalwood · Amber', rating:5 },
+  { id:4, name:'Good Girl', brand:'Carolina Herrera', price:58000, oldPrice:72000, category:'women', badge:'sale', color:'#1A0A1A', notes:'Tuberose · Jasmine · Cocoa', rating:4 },
+  { id:5, name:'Bleu de Chanel', brand:'Chanel', price:68000, oldPrice:null, category:'men', badge:'top', color:'#0A0A1A', notes:'Citrus · Woody · Warm Spice', rating:5 },
+  { id:6, name:'La Vie est Belle', brand:'Lancôme', price:55000, oldPrice:68000, category:'women', badge:'sale', color:'#2A1A0A', notes:'Iris · Patchouli · Gourmand', rating:4 },
+  { id:7, name:'Oud Wood', brand:'Tom Ford', price:92000, oldPrice:null, category:'unisex', badge:'new', color:'#2A1500', notes:'Oud · Sandalwood · Rosewood', rating:5 },
+  { id:8, name:'Acqua di Gio', brand:'Giorgio Armani', price:48000, oldPrice:58000, category:'men', badge:'sale', color:'#0A1A2A', notes:'Aquatic · Bergamot · Marine', rating:4 },
+];
+
+let cart = [];
+let selectedPay = 'opay';
+let currentFilter = 'all';
+
+// FORMAT PRICE
+const fmt = n => '₦' + n.toLocaleString();
+
+// BOTTLE COLORS
+function bottleColors(color) {
+  return { background: `radial-gradient(circle at 40% 30%, ${color}aa, ${color}44)` };
+}
+
+// RENDER PRODUCTS
+function renderProducts(list) {
+  const grid = document.getElementById('productGrid');
+  if(!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 0;color:var(--muted)">No products found in this category.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(p => `
+    <div class="product-card" data-category="${p.category}" data-id="${p.id}">
+      <div class="product-img" style="background:radial-gradient(circle at 40% 30%, ${p.color}cc, ${p.color}44)">
+        <div class="product-img-bg" style="background:radial-gradient(circle at 60% 60%, ${p.color}55, transparent);width:100%;height:100%;position:absolute;top:0;left:0;"></div>
+        <svg class="prod-bottle" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="36" y="4" width="28" height="18" rx="4" fill="#2A2A2A"/>
+          <rect x="39" y="1" width="22" height="7" rx="3" fill="#D4AF37"/>
+          <rect x="40" y="22" width="20" height="16" rx="2" fill="#333"/>
+          <path d="M34 38 Q33 50 28 62 L28 148 Q28 160 50 160 Q72 160 72 148 L72 62 Q67 50 66 38 Z" fill="url(#pb${p.id})"/>
+          <path d="M36 52 Q35 80 35 100 L38 100 Q38 80 40 52 Z" fill="rgba(255,255,255,0.15)"/>
+          <rect x="33" y="80" width="34" height="44" rx="2" fill="rgba(0,0,0,0.3)"/>
+          <rect x="37" y="87" width="26" height="3" rx="1" fill="#D4AF37" opacity=".9"/>
+          <rect x="39" y="94" width="22" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+          <rect x="38" y="100" width="24" height="2" rx="1" fill="rgba(255,255,255,0.25)"/>
+          <rect x="40" y="112" width="12" height="6" rx="1" fill="#E8272A" opacity=".8"/>
+          <rect x="28" y="148" width="44" height="9" rx="3" fill="#1A1A1A"/>
+          <defs>
+            <linearGradient id="pb${p.id}" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="${p.color}" stop-opacity=".9"/>
+              <stop offset="60%" stop-color="${p.color}" stop-opacity=".7"/>
+              <stop offset="100%" stop-color="#0A0A0A" stop-opacity=".9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        ${p.badge ? `<div class="product-badge badge-${p.badge}">${p.badge === 'hot' ? '🔥 Hot' : p.badge === 'new' ? '✦ New' : p.badge === 'sale' ? '% Sale' : '⭐ Top'}</div>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="rating">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</div>
+        <div class="product-desc">${p.notes}</div>
+        <div class="product-price-row">
+          <div>
+            <div class="product-price">${fmt(p.price)}</div>
+            ${p.oldPrice ? `<div class="product-old-price">${fmt(p.oldPrice)}</div>` : ''}
+          </div>
+          <button class="add-btn" onclick="addToCart(${p.id})" title="Add to bag">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// FILTER
+function filterProducts(cat, btn) {
+  currentFilter = cat;
+  if(btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const filtered = cat === 'all' ? products : products.filter(p => p.category === cat || p.badge === cat);
+  renderProducts(filtered);
+  document.getElementById('catalog').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// CART
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  const existing = cart.find(x => x.id === id);
+  if(existing) existing.qty++;
+  else cart.push({ ...p, qty: 1 });
+  updateCartCount();
+  showToast(`${p.name} added to bag! 🛒`);
+}
+
+function updateCartCount() {
+  const total = cart.reduce((s,x) => s + x.qty, 0);
+  document.getElementById('cartCount').textContent = total;
+}
+
+function openCart() {
+  document.getElementById('cartModal').classList.add('open');
+  document.getElementById('checkoutForm').classList.remove('visible');
+  document.getElementById('orderSuccess').classList.remove('visible');
+  document.getElementById('cartView').style.display = 'block';
+  renderCart();
+}
+
+function closeCart() {
+  document.getElementById('cartModal').classList.remove('open');
+}
+
+function renderCart() {
+  const el = document.getElementById('cartItems');
+  const totalEl = document.getElementById('cartTotal');
+  const actEl = document.getElementById('cartActions');
+  const subtitleEl = document.getElementById('cartSubtitle');
+
+  if(!cart.length) {
+    el.innerHTML = `<div class="empty-cart"><div class="empty-cart-icon">🛍️</div><div>Your bag is empty</div><div style="font-size:13px;margin-top:8px;color:var(--muted)">Add some fragrances to get started</div></div>`;
+    totalEl.style.display = 'none';
+    actEl.innerHTML = `<button class="btn-primary" style="width:100%" onclick="closeCart()">Browse Collection</button>`;
+    subtitleEl.textContent = 'Your selected fragrances';
+    return;
+  }
+
+  el.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img" style="background:radial-gradient(circle,${item.color}88,${item.color}22)">
+        <svg width="36" height="56" viewBox="0 0 100 180" fill="none">
+          <rect x="36" y="4" width="28" height="18" rx="4" fill="#333"/>
+          <rect x="39" y="1" width="22" height="7" rx="3" fill="#D4AF37"/>
+          <rect x="40" y="22" width="20" height="16" rx="2" fill="#444"/>
+          <path d="M34 38 Q33 50 28 62 L28 148 Q28 160 50 160 Q72 160 72 148 L72 62 Q67 50 66 38 Z" fill="${item.color}" opacity=".85"/>
+          <rect x="28" y="148" width="44" height="9" rx="3" fill="#1A1A1A"/>
+        </svg>
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${item.brand}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="cart-item-price">${fmt(item.price * item.qty)}</div>
+        <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+      </div>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((s,x) => s + x.price * x.qty, 0);
+  totalEl.style.display = 'flex';
+  document.getElementById('totalAmount').textContent = fmt(total);
+  document.getElementById('checkoutTotal').textContent = fmt(total);
+  subtitleEl.textContent = `${cart.reduce((s,x) => s+x.qty,0)} item(s) in your bag`;
+
+  actEl.innerHTML = `
+    <button class="place-order-btn" onclick="goToCheckout()">Proceed to Checkout</button>
+    <div class="divider"><span>or</span></div>
+    <a class="wa-btn" style="justify-content:center;width:100%;" href="#" onclick="orderViaWhatsApp()">
+      <span>💬</span> Order via WhatsApp
+    </a>
+  `;
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(x => x.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) removeFromCart(id);
+  else { updateCartCount(); renderCart(); }
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCartCount();
+  renderCart();
+}
+
+function goToCheckout() {
+  document.getElementById('checkoutForm').classList.add('visible');
+  document.getElementById('cartView').style.display = 'none';
+}
+
+function backToCart() {
+  document.getElementById('checkoutForm').classList.remove('visible');
+  document.getElementById('cartView').style.display = 'block';
+}
+
+function selectPay(el, method) {
+  selectedPay = method;
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function placeOrder() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const address = document.getElementById('address').value.trim();
+  if(!fname || !phone || !address) { showToast('Please fill all required fields'); return; }
+
+  document.getElementById('checkoutForm').classList.remove('visible');
+  document.getElementById('orderSuccess').classList.add('visible');
+
+  const total = cart.reduce((s,x) => s + x.price * x.qty, 0);
+  const items = cart.map(x => `${x.name} x${x.qty}`).join(', ');
+
+  if(selectedPay === 'whatsapp') {
+    const msg = `Hello RholaScents! 🛍️\n\nNew Order from ${fname} ${lname}\n📞 ${phone}\n📍 ${address}\n\nItems: ${items}\n💰 Total: ${fmt(total)}\n\nPayment: WhatsApp Transfer`;
+    setTimeout(() => openWhatsApp(msg), 1200);
+    document.getElementById('successMsg').textContent = `Order sent to WhatsApp! We'll confirm your ${fmt(total)} order shortly, ${fname}.`;
+  } else {
+    document.getElementById('successMsg').textContent = `Redirecting to OPay for ${fmt(total)}. Your order is confirmed, ${fname}! We'll contact you on ${phone}.`;
+    // OPay integration: replace with actual OPay payment link/merchant ID
+    // setTimeout(() => window.location.href = 'https://opaycheckout.com/...', 2000);
+  }
+
+  cart = [];
+  updateCartCount();
+}
+
+function orderViaWhatsApp() {
+  const total = cart.reduce((s,x) => s + x.price * x.qty, 0);
+  const items = cart.map(x => `• ${x.name} (${x.brand}) x${x.qty} = ${fmt(x.price * x.qty)}`).join('\n');
+  const msg = `Hello RholaScents! 🛍️\n\nI'd like to order:\n${items}\n\n💰 Total: ${fmt(total)}\n\nPlease let me know payment and delivery details. Thank you!`;
+  openWhatsApp(msg);
+}
+
+function openWhatsApp(msg) {
+  // Replace +2348000000000 with actual RholaScents WhatsApp number
+  const phone = '2348000000000';
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  return false;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Close modal on overlay click
+document.getElementById('cartModal').addEventListener('click', function(e) {
+  if(e.target === this) closeCart();
+});
+
+// INIT
+renderProducts(products);
+</script>
+</body>
+</html>
