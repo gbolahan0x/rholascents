@@ -1186,7 +1186,7 @@ function placeOrder() {
     // NOTE: OPay requires a server-side call (SHA-512 HMAC signature + MerchantId header).
     // From a static site we redirect to OPay's hosted checkout with order details pre-filled.
     // Replace MERCHANT_ID below with your real OPay Merchant ID from your OPay dashboard.
-    const OPAY_MERCHANT_ID = 'YOUR_OPAY_MERCHANT_ID'; // ← paste your Merchant ID here
+    const OPAY_MERCHANT_ID = '6115301091'; // ← paste your Merchant ID here
     const reference = 'RHL_' + Date.now();
     const amountKobo = total * 100; // OPay expects amount in lowest denomination (kobo)
 
