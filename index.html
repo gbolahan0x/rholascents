@@ -812,7 +812,7 @@
     <div class="wa-title">Order via WhatsApp</div>
     <div class="wa-sub">Prefer a personal touch? Chat with us directly on WhatsApp. Share the fragrance you want, your delivery address — and we'll handle the rest. Fast, easy, and personal.</div>
   </div>
-  <a class="wa-btn" href="#" onclick="openWhatsApp('Hello RholaScents! I would like to place an order.')">
+  <a class="wa-btn" href="javascript:void(0)" onclick="openWhatsApp('Hello RholaScents! I would like to place an order.')">
     <span class="wa-icon">💬</span>
     Chat & Order Now
   </a>
@@ -878,7 +878,7 @@
       <ul class="footer-links">
         <li><a href="#">📍 Lagos, Nigeria</a></li>
         <li><a href="tel:+2348168187528">📞 +234 816 818 7528</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#dab2bfb6b6b59aa8b2b5b6bba9b9bfb4aea9f4b9b5b7">✉️ <span class="__cf_email__" data-cfemail="b6ded3dadad9f6c4ded9dad7c5d5d3d8c2c598d5d9db">[email&#160;protected]</span></a></li>
+        <li><a href="mailto:hello@rholascents.com">✉️ hello@rholascents.com</a></li>
         <li><a href="#">🕐 Mon–Sat, 8am–8pm</a></li>
       </ul>
     </div>
@@ -895,7 +895,7 @@
 </footer>
 
 <!-- FLOATING WHATSAPP -->
-<a class="float-wa" href="#" onclick="openWhatsApp('Hi RholaScents! I need help.')">💬</a>
+<a class="float-wa" href="javascript:void(0)" onclick="openWhatsApp('Hi RholaScents! I need help.')">💬</a>
 
 <!-- CART MODAL -->
 <div class="modal-overlay" id="cartModal">
@@ -1128,7 +1128,7 @@ function renderCart() {
   actEl.innerHTML = `
     <button class="place-order-btn" onclick="goToCheckout()">Proceed to Checkout</button>
     <div class="divider"><span>or</span></div>
-    <a class="wa-btn" style="justify-content:center;width:100%;" href="#" onclick="orderViaWhatsApp()">
+    <a class="wa-btn" style="justify-content:center;width:100%;" href="javascript:void(0)" onclick="orderViaWhatsApp()">
       <span>💬</span> Order via WhatsApp
     </a>
   `;
@@ -1182,39 +1182,16 @@ function placeOrder() {
     setTimeout(() => openWhatsApp(msg), 1200);
     document.getElementById('successMsg').textContent = `Order sent to WhatsApp! We'll confirm your ${fmt(total)} order shortly, ${fname}.`;
   } else {
-    // OPay Production API — https://api.opaycheckout.com/api/v1/international/payment/create
-    // NOTE: OPay requires a server-side call (SHA-512 HMAC signature + MerchantId header).
-    // From a static site we redirect to OPay's hosted checkout with order details pre-filled.
-    // Replace MERCHANT_ID below with your real OPay Merchant ID from your OPay dashboard.
-    const OPAY_MERCHANT_ID = 'YOUR_OPAY_MERCHANT_ID'; // ← paste your Merchant ID here
+    // OPay Production API (Nigeria): https://liveapi.opaycheckout.com/api/v1/international/payment/create
+    // This requires server-side HMAC signing. For now, we notify via WhatsApp & show order ref.
+    // Replace YOUR_OPAY_MERCHANT_ID with your real Merchant ID from opaycheckout.com dashboard.
     const reference = 'RHL_' + Date.now();
-    const amountKobo = total * 100; // OPay expects amount in lowest denomination (kobo)
-
-    // Build OPay hosted payment URL (standard redirect flow for static/frontend sites)
-    // For full server-to-server API, move this to a backend and sign with SHA-512 HMAC.
-    const opayPayload = {
-      reference,
-      amount: { currency: 'NGN', total: amountKobo },
-      country: 'NG',
-      product: { name: 'RholaScents Order', description: items },
-      callbackUrl: window.location.href,
-      userInfo: { userName: `${fname} ${lname}`, userMobile: phone }
-    };
-
     document.getElementById('successMsg').innerHTML =
-      `Processing OPay payment of ${fmt(total)} for ${fname}...<br/>
-       <small style="color:var(--muted);font-size:12px;">Ref: ${reference}</small>`;
-
-    // Redirect to OPay live checkout endpoint after short delay
-    // Production endpoint: https://liveapi.opaycheckout.com/api/v1/international/payment/create
-    // For static site usage, redirect customer to OPay payment page:
+      `OPay payment initiated for ${fmt(total)}, ${fname}!<br/>
+       <small style="opacity:.7;font-size:12px">Order Ref: ${reference} · We'll contact you on ${phone}</small>`;
+    // Also send order to WhatsApp so no order is lost
     setTimeout(() => {
-      window.open(
-        `https://liveapi.opaycheckout.com/api/v1/international/payment/create`,
-        '_blank'
-      );
-      // Also notify via WhatsApp so order is not lost while OPay is set up
-      const waMsg = `🛍️ New OPay Order!\n\nCustomer: ${fname} ${lname}\n📞 ${phone}\n📍 ${address}\n\nItems: ${items}\n💰 Total: ${fmt(total)}\nRef: ${reference}\nPayment: OPay`;
+      const waMsg = `🛍️ OPay Order!\n\n👤 ${fname} ${lname}\n📞 ${phone}\n📍 ${address}\n\nItems: ${items}\n💰 Total: ${fmt(total)}\nRef: ${reference}`;
       openWhatsApp(waMsg);
     }, 1500);
   }
@@ -1241,4 +1218,16 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Close modal on overlay click
+document.getElementById('cartModal').addEventListener('click', function(e) {
+  if(e.target === this) closeCart();
+});
+
+// INIT — render all products on load
+renderProducts(products);
+</script>
+</body>
+</html>
