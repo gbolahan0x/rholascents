@@ -2,7 +2,7 @@
 
 > Nigeria's premier destination for authentic luxury fragrances.
 
-**Live Site:** https://Gbolahan0x.github.io/rholascents
+**Live Site at:** https://Gbolahan0x.github.io/rholascents
 
 ---
 
