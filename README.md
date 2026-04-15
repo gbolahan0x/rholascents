@@ -1,4 +1,4 @@
-# RholaScents 🛍️
+# RholaScents by Kofoworola🛍️
 
 > Nigeria's premier destination for authentic luxury fragrances.
 
